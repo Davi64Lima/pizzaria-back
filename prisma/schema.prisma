@@ -81,77 +81,20 @@ model Flavor {
   updatedAt DateTime @updatedAt
 
   @@map("flavors")
-  OrderItemFlavor OrderItemFlavor[]
 }
 
-model Size {
-  id        Int      @id @default(autoincrement())
-  name      String   // P, M, G, etc.
-  multiplier Float    // Ex.: 1.0 (P), 1.3 (M), 1.5 (G)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  pizzas    Pizza[]
-
-  @@map("sizes")
-  OrderItem OrderItem[]
-}
 
 model Order {
   id        Int         @id @default(autoincrement())
   uuid      String      @default(uuid()) @unique
   status    OrderStatus @default(PENDING)
   total     Float
+  cart      Json
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
   userId    Int?
   user      User?       @relation(fields: [userId], references: [id])
-  items     OrderItem[]
 
   @@map("orders")
-}
-
-model Pizza {
-  id          Int           @id @default(autoincrement())
-  uuid        String        @default(uuid()) @unique
-  name        String
-  slug        String        @unique
-  description String?
-  basePrice   Float
-  sizeId      Int
-  size        Size          @relation(fields: [sizeId], references: [id])
-  image       String?
-  isActive    Boolean       @default(true)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  orderItems  OrderItem[]   // <-- back relation resolvendo o erro
-
-  @@map("pizzas")
-}
-
-model OrderItem {
-  id        Int       @id @default(autoincrement())
-  order     Order     @relation(fields: [orderId], references: [id])
-  orderId   Int
-  pizza     Pizza     @relation(fields: [pizzaId], references: [id])
-  pizzaId   Int
-  size      Size      @relation(fields: [sizeId], references: [id])
-  sizeId    Int
-  quantity  Int
-  subtotal  Float
-  flavors   OrderItemFlavor[]
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
-
-
-model OrderItemFlavor {
-  id          Int       @id @default(autoincrement())
-  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
-  orderItemId Int
-  flavor      Flavor    @relation(fields: [flavorId], references: [id])
-  flavorId    Int
 }
