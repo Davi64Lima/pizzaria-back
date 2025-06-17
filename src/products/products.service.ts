@@ -8,7 +8,6 @@ export class ProductsService {
   constructor(private prismaService: PrismaService) {}
 
   create(createProductDto: CreateProductDto) {
-    console.log('Creating product:', createProductDto);
     return this.prismaService.product.create({
       data: {
         ...createProductDto,
