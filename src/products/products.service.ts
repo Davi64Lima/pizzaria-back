@@ -8,11 +8,18 @@ export class ProductsService {
   constructor(private prismaService: PrismaService) {}
 
   create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+    console.log('Creating product:', createProductDto);
+    return this.prismaService.product.create({
+      data: {
+        ...createProductDto,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all products`;
+    return this.prismaService.product.findMany();
   }
 
   findOne(id: number) {
