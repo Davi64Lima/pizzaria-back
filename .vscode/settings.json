@@ -1,0 +1,9 @@
+{
+    "files.autoSave": "onWindowChange",
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "eslint.codeActionsOnSave.rules": [
+        "fixAll",
+        "source.fixAll.eslint"
+    ],
+    "eslint.run": "onSave"
+}
