@@ -4,6 +4,7 @@ GET http://localhost:3000/products
 
 ### Get all products
 
+# @name createProduct
 POST http://localhost:3000/products
 Content-Type: application/json
 
@@ -11,20 +12,22 @@ Content-Type: application/json
   "name": "Refrigerante Coca-Cola 1L",
   "slug": "refrigerante-coca-cola-1l",
   "description": "Refrigerante Coca-Cola 1L",
-  "price": 7.99,
+  "price": 799,
   "image": "https://images.tcdn.com.br/img/img_prod/1115696/coca_cola_pet_1l_13_1_b28aa1d4aa4d9eb3d6d7d9c8eb5e9cdf.jpg",
   "isActive": true
 }
 
 ### Create a new product
 
-GET http://localhost:3000/products/1
+@productId = {{ createProduct.response.body.id }}
+
+GET http://localhost:3000/products/{{productId}}
 
 
 ### Get product by ID
 
-PATCH http://localhost:3000/products/1
+PATCH http://localhost:3000/products/{{productId}}
 
 ### Update product by ID
 
-DELETE http://localhost:3000/products/1
+DELETE http://localhost:3000/products/{{productId}}
