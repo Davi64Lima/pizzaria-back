@@ -1,6 +1,7 @@
 ###
 
 GET http://localhost:3000/products
+Authorization: Bearer {{ jwt }}
 
 ### Get all products
 
@@ -39,7 +40,7 @@ Content-Type: application/json
 
 {
    "name": "Davi Lima",
-  "phone": "(71) 98452-7436",
+  "phone": "(71) 98452-7435",
   "address": {
     "street": "Rua Exemplo",
     "number": "123",
@@ -47,6 +48,20 @@ Content-Type: application/json
     "state": "BA",
     "zipCode": "40000-000"
   },
-  "email": "novodavilima@gmail.com",
+  "email": "novodavilima1@gmail.com",
   "password": "senha123"
 }
+
+### Login user
+# @name login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "novodavilima1@gmail.com",
+  "password": "senha123"
+}
+
+###
+
+@jwt = {{ login.response.body.access_token }}
