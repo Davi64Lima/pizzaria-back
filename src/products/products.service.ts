@@ -44,30 +44,41 @@ export class ProductsService {
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
-    let product = await this.prismaService.product.update({
-      where: { id },
-      data: {
-        ...updateProductDto,
-        updatedAt: new Date(),
-      },
-    });
+    let product: Awaited<
+      ReturnType<typeof this.prismaService.product.findFirst>
+    > | null = null;
 
-    if (product && product.id !== id && updateProductDto.slug) {
-      throw new ProductSlugAlreadyExistsError(updateProductDto.slug);
+    if (updateProductDto.slug) {
+      product = await this.prismaService.product.findFirst({
+        where: {
+          slug: updateProductDto.slug,
+        },
+      });
+    }
+
+    if (product && product.id !== id) {
+      throw new ProductSlugAlreadyExistsError(updateProductDto.slug!);
     }
 
     product =
       product && product.id === id
         ? product
         : await this.prismaService.product.findFirst({
-            where: { id },
+            where: {
+              id,
+            },
           });
 
     if (!product) {
       throw new NotFoundError('Product', id);
     }
 
-    return product;
+    return this.prismaService.product.update({
+      where: {
+        id,
+      },
+      data: updateProductDto,
+    });
   }
 
   async remove(id: number) {

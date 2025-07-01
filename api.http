@@ -31,3 +31,22 @@ PATCH http://localhost:3000/products/{{productId}}
 ### Update product by ID
 
 DELETE http://localhost:3000/products/{{productId}}
+
+
+### Register a new user
+POST http://localhost:3000/auth/register
+Content-Type: application/json  
+
+{
+   "name": "Davi Lima",
+  "phone": "(71) 98452-7436",
+  "address": {
+    "street": "Rua Exemplo",
+    "number": "123",
+    "city": "Salvador",
+    "state": "BA",
+    "zipCode": "40000-000"
+  },
+  "email": "novodavilima@gmail.com",
+  "password": "senha123"
+}
