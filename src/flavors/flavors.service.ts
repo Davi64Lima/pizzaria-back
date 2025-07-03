@@ -1,15 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFlavorDto } from './dto/create-flavor.dto';
 import { UpdateFlavorDto } from './dto/update-flavor.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { InputJsonValue } from 'generated/prisma/runtime/library';
 
 @Injectable()
 export class FlavorsService {
-  create(createFlavorDto: CreateFlavorDto) {
-    return 'This action adds a new flavor';
+  constructor(private prismaService: PrismaService) {}
+
+  async create(createFlavorDto: CreateFlavorDto) {
+    const existingFlavor = await this.prismaService.flavor.findFirst({
+      where: { name: createFlavorDto.slug },
+    });
+
+    if (existingFlavor) {
+      throw new Error(
+        `Flavor with slug ${createFlavorDto.slug} already exists`,
+      );
+    }
+
+    return this.prismaService.flavor.create({
+      data: {
+        ...createFlavorDto,
+        prices: createFlavorDto.prices as unknown as InputJsonValue,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all flavors`;
+    return this.prismaService.flavor.findMany();
   }
 
   findOne(id: number) {

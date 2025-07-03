@@ -18,6 +18,22 @@ Content-Type: application/json
   "isActive": true
 }
 
+###
+
+# @name createFalvor
+POST http://localhost:3000/flavors
+Content-Type: application/json
+
+{
+  "name": "Romeu e Julieta",
+  "slug": "romeu-e-julieta",
+  "type": "DOCE",
+  "description": "Queijo mussarela e goiabada.",
+  "prices": { "middle": 4000, "large": 5000, "family": 5600 }
+}
+
+
+
 ### Create a new product
 
 @productId = {{ createProduct.response.body.id }}
@@ -65,3 +81,6 @@ Content-Type: application/json
 ###
 
 @jwt = {{ login.response.body.access_token }}
+
+###
+GET http://localhost:3000/flavors
